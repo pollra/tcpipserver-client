@@ -18,55 +18,7 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 
 	private Font fontAll = new Font("돋움", Font.PLAIN, 16);
 	
-	private String Testtext = "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사"
-			+ "가나다라마바사아자차카타파하가나다라마바사";
+	private String Testtext="";
 	
 	JPanel centerPanel;
 	JPanel topPanel;
@@ -78,8 +30,10 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 	
 	
 	JLabel titleLabel;
+	JLabel chatLabel;
 	
 	JButton close;
+	JButton inputBtn;
 
 	int windowWidth = 350;
 	int windowHeigth = 700;
@@ -89,6 +43,9 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 	}
 
 	public UserInterface_v02(String title) {
+		for(int i=0; i<200; i++) {
+			Testtext+="빼애애앢";
+		}
 		
 		centerPanel = new JPanel();
 		topPanel = new JPanel();
@@ -98,9 +55,11 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 		chatView= new TextArea(Testtext, 27, 37, ScrollOff);
 		inputChar= new TextArea("",6,37,ScrollOff);
 		
+		chatLabel = new JLabel("읭끵읭");
+		
 		titleLabel = new JLabel("TcpIpClient v0.1");
 		close = new JButton("X");
-		
+		inputBtn = new JButton();
 		setUndecorated(true);
 		setTitle(title);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -117,9 +76,14 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 			topPanel.add("East",close);
 		
 		add("Center", centerPanel);
-			centerPanel.add("Center",chatView);
 			centerPanel.setBackground(new Color(204,229,255));
 			centerPanel.setPreferredSize(new Dimension(350, 550));
+//			centerPanel.add("Center",chatView);
+			centerPanel.add("Center", chatLabel);
+				chatLabel.setFont(fontAll);
+				chatLabel.setPreferredSize(new Dimension(345, 545));
+				chatLabel.setHorizontalAlignment(SwingConstants.LEFT);
+				chatLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		
 		
 		
@@ -127,7 +91,8 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 			bottomPanel.setBackground(new Color(204,204,255));
 			bottomPanel.setPreferredSize(new Dimension(350, 120));
 			bottomPanel.add(inputChar);
-		
+			bottomPanel.add("East",inputBtn);
+				inputBtn.setPreferredSize(new Dimension(50, 110));
 		chatView.setFont(fontAll);
 		
 		close.addMouseListener(new MouseAdapter() {
