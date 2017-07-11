@@ -7,18 +7,20 @@ import java.util.Scanner;
 public class TcpIpClient4 {
 
 	public static void main(String args[]) {
-		if(args.length==0) {
-			System.out.println("USAGE : java TcpIpClient_v0.4");
-			System.exit(0);
-		}
+//		if(args.length!=1) {
+//			System.out.println("USAGE : java TcpIpClient_v0.4");
+//			System.exit(0);
+//		}
 		
 		try {
 			String serverIp=null;
 			//소켓생성 연결시도
+			Scanner sc = new Scanner(System.in);
+			System.out.print("사용자 이름을 입력해주세요 :");
+			String userName = sc.nextLine();
 			Socket socket = new Socket(serverIp, 8086);
-			
 			System.out.println("서버 연결 성공");
-			Thread sender = new Thread(new ClientSender(socket, args[0]));
+			Thread sender = new Thread(new ClientSender(socket, userName));
 			Thread receiver = new Thread(new ClientReceiver(socket));
 			
 			sender.start();
@@ -73,6 +75,11 @@ public class TcpIpClient4 {
 			while(in!=null) {
 				try {
 					System.out.println(in.readUTF());
+					if(in.readUTF().equals("서버가 종료되었습니다.")) {
+						System.exit(0);
+					}else {
+						
+					}
 				} catch (IOException e) { }
 			}
 		}// run()

@@ -29,6 +29,7 @@ public class TcpIpClient3 {
 
 			sender.start();
 			receiver.start();
+			
 		} catch (ConnectException e) {
 			System.out.println("[!] 치명적 에러 발생");
 		} catch (Exception e) {

@@ -10,7 +10,6 @@ import java.util.*;
 public class TcpIpServer7 {
 	HashMap clients;
 	
-	@SuppressWarnings("unchecked")
 	public TcpIpServer7() {
 		clients = new HashMap();
 		Collections.synchronizedMap(clients);
