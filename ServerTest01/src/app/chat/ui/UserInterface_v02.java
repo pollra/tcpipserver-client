@@ -3,6 +3,8 @@ package app.chat.ui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardUpLeftHandler;
+import javax.swing.text.html.HTML;
 
 public class UserInterface_v02 extends JFrame implements Runnable{
 
@@ -38,6 +40,8 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 	int windowWidth = 350;
 	int windowHeigth = 700;
 
+	String outText="";
+	
 	public UserInterface_v02() {
 		this("UserInterface_v02");
 	}
@@ -55,7 +59,7 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 		chatView= new TextArea(Testtext, 27, 37, ScrollOff);
 		inputChar= new TextArea("",6,37,ScrollOff);
 		
-		chatLabel = new JLabel("읭끵읭");
+		chatLabel = new JLabel();
 		
 		titleLabel = new JLabel("TcpIpClient v0.1");
 		close = new JButton("X");
@@ -78,19 +82,17 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 		add("Center", centerPanel);
 			centerPanel.setBackground(new Color(204,229,255));
 			centerPanel.setPreferredSize(new Dimension(350, 550));
-//			centerPanel.add("Center",chatView);
 			centerPanel.add("Center", chatLabel);
 				chatLabel.setFont(fontAll);
 				chatLabel.setPreferredSize(new Dimension(345, 545));
 				chatLabel.setHorizontalAlignment(SwingConstants.LEFT);
 				chatLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		
-		
-		
 		add("South", bottomPanel);
 			bottomPanel.setBackground(new Color(204,204,255));
 			bottomPanel.setPreferredSize(new Dimension(350, 120));
 			bottomPanel.add(inputChar);
+				inputChar.addKeyListener(keyComendListener());
 			bottomPanel.add("East",inputBtn);
 				inputBtn.setPreferredSize(new Dimension(50, 110));
 		chatView.setFont(fontAll);
@@ -100,8 +102,6 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 				System.exit(0);
 			}
 		});
-		
-		
 		topPanel.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				point.x = e.getX();
@@ -119,9 +119,31 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 		setVisible(true);
 	}
 
+	private KeyAdapter keyComendListener() {
+		return new KeyAdapter() {
+			@Override //누르고 있을때
+			public void keyPressed(KeyEvent e) {
+				if(e.isShiftDown()&&e.getKeyCode()==10) {
+					System.out.println("input Comend");
+				}else if(e.getKeyCode()==10) {
+					System.out.println("on The Enter");
+					
+					// 입력한 내용을 서버로 보내는 역할
+					inputChar.setText("");
+					chatLabel.repaint();
+				}
+			}
+		};
+	}
+
+	public String textInput(String text) {
+		inputChar.getText().replaceAll("(.*)\n", "<br/>");
+		return "";
+	}
+	
+	// 서버와 통신을 담당하는 쓰레드
 	@Override
 	public void run() {
-		
 		
 	}
 
