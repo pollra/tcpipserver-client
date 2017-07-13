@@ -7,11 +7,6 @@ import java.util.Scanner;
 public class TcpIpClient4 {
 
 	public static void main(String args[]) {
-//		if(args.length!=1) {
-//			System.out.println("USAGE : java TcpIpClient_v0.4");
-//			System.exit(0);
-//		}
-		
 		try {
 			String serverIp=null;
 			//소켓생성 연결시도
