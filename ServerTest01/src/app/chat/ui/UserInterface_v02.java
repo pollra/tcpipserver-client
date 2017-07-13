@@ -3,6 +3,7 @@ package app.chat.ui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardUpLeftHandler;
 import javax.swing.text.html.HTML;
 
@@ -27,9 +28,9 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 	JPanel bottomPanel;
 	JPanel nullPanel;
 	
-	TextArea chatView;
-	TextArea inputChar;
-	
+	JTextArea chatView;
+	JTextArea inputChar;
+	JScrollPane scrollPane;
 	
 	JLabel titleLabel;
 	JLabel chatLabel;
@@ -37,7 +38,7 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 	JButton close;
 	JButton inputBtn;
 
-	int windowWidth = 350;
+	int windowWidth = 354;
 	int windowHeigth = 700;
 
 	String outText="";
@@ -56,14 +57,16 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 		bottomPanel = new JPanel();
 		nullPanel = new JPanel();
 		
-		chatView= new TextArea(Testtext, 27, 37, ScrollOff);
-		inputChar= new TextArea("",6,37,ScrollOff);
+		chatView= new JTextArea("", 33, 31);
+			chatView.setBackground(new Color(204,229,255));
+		inputChar= new JTextArea("",7,25);
+		scrollPane = new JScrollPane(chatView);
 		
 		chatLabel = new JLabel();
 		
 		titleLabel = new JLabel("TcpIpClient v0.1");
 		close = new JButton("X");
-		inputBtn = new JButton();
+		inputBtn = new JButton(new ImageIcon("src/img/inputBtn.png"));
 		setUndecorated(true);
 		setTitle(title);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -82,20 +85,22 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 		add("Center", centerPanel);
 			centerPanel.setBackground(new Color(204,229,255));
 			centerPanel.setPreferredSize(new Dimension(350, 550));
-			centerPanel.add("Center", chatLabel);
-				chatLabel.setFont(fontAll);
-				chatLabel.setPreferredSize(new Dimension(345, 545));
-				chatLabel.setHorizontalAlignment(SwingConstants.LEFT);
-				chatLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-		
+			centerPanel.add("Center", scrollPane);
+				Border lineBorder = BorderFactory.createLineBorder(Color.WHITE, 0);
+				scrollPane.setFont(fontAll);
+				scrollPane.setBorder(lineBorder);
+				scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		add("South", bottomPanel);
 			bottomPanel.setBackground(new Color(204,204,255));
 			bottomPanel.setPreferredSize(new Dimension(350, 120));
-			bottomPanel.add(inputChar);
+			bottomPanel.add("Center",inputChar);
+				inputChar.setBorder(lineBorder);
 				inputChar.addKeyListener(keyComendListener());
 			bottomPanel.add("East",inputBtn);
 				inputBtn.setPreferredSize(new Dimension(50, 110));
-		chatView.setFont(fontAll);
+				inputBtn.setBorderPainted(false); 
+				inputBtn.setFocusPainted(false); 
+				inputBtn.setContentAreaFilled(false);
 		
 		close.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -144,6 +149,8 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 	// 서버와 통신을 담당하는 쓰레드
 	@Override
 	public void run() {
+		UiService_v02 uiservice = new UiService_v02("Guest");
+		
 		
 	}
 
