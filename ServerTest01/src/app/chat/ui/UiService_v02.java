@@ -10,12 +10,9 @@ public class UiService_v02 {
 		try {
 			String serverIp=null;
 			//소켓생성 연결시도
-			Scanner sc = new Scanner(System.in);
-			System.out.print("사용자 이름을 입력해주세요 :");
-			String userName = sc.nextLine();
 			Socket socket = new Socket(serverIp, 8086);
 			System.out.println("서버 연결 성공");
-			Thread sender = new Thread(new ClientSender(socket, userName));
+			Thread sender = new Thread(new ClientSender(socket, name));
 			Thread receiver = new Thread(new ClientReceiver(socket));
 			
 			sender.start();

@@ -8,7 +8,7 @@ public class UITest {
 	
 	public static void main(String[] args) {
 		System.out.println("UserInterface_v02 Test");
-		new UserInterface_v02();
+		new UserInterface_v02().run();
 		
 	}
 }

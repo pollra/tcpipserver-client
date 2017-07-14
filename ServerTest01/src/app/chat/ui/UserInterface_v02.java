@@ -2,6 +2,8 @@ package app.chat.ui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.net.ConnectException;
+import java.net.Socket;
 import java.util.Scanner;
 
 import javax.swing.*;
@@ -9,68 +11,69 @@ import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardUpLeftHandler;
 import javax.swing.text.html.HTML;
 
-public class UserInterface_v02 extends JFrame implements Runnable{
+public class UserInterface_v02 extends JFrame implements Runnable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final int ScrollOff = 3;
 	private static final int ScrollOn = 1;
-	
+
 	private static Point point = new Point();
 
 	private Font fontAll = new Font("돋움", Font.PLAIN, 16);
-	
-	private String Testtext="";
-	
+
+	private String Testtext = "";
+
 	JPanel centerPanel, topPanel, bottomPanel, nullPanel;
-	
+
 	JTextArea chatView, inputChar;
 	JScrollPane scrollPane;
-	
+
 	JLabel titleLabel, chatLabel;
-	
+
 	JButton close, inputBtn;
-	
+
 	Color centerColor, topColor, bottomColor;
 
 	int windowWidth = 354;
 	int windowHeigth = 700;
 
-	String outText="";
-	
+	String outText = "";
+
 	Scanner sc;
-	
+
 	public UserInterface_v02() {
 		this("UserInterface_v02");
 	}
 
 	public UserInterface_v02(String title) {
-		for(int i=0; i<200; i++) {
-			Testtext+="빼애애앢";
+		for (int i = 0; i < 200; i++) {
+			Testtext += "빼애애앢";
 		}
-		
+		// 패널 초기화
 		centerPanel = new JPanel();
 		topPanel = new JPanel();
 		bottomPanel = new JPanel();
 		nullPanel = new JPanel();
-		
-		centerColor = new Color(204,229,255);
-		topColor = new Color(208,255,255);
-		bottomColor = new Color(204,204,255);
-		
-		chatView= new JTextArea("", 33, 31);
-			chatView.setBackground(centerColor);
-			chatView.setEditable(false);
-		inputChar= new JTextArea("",7,25);
+
+		// 색 초기화
+		topColor = new Color(208, 255, 255);
+		centerColor = new Color(204, 229, 255);
+		bottomColor = new Color(204, 204, 255);
+
+		// 에리어 초기화
+		chatView = new JTextArea("", 33, 31);
+		chatView.setBackground(centerColor);
+		chatView.setEditable(false);
+		inputChar = new JTextArea("", 7, 25);
 		scrollPane = new JScrollPane(chatView);
-		
+
+		// 채팅라벨 초기화
 		chatLabel = new JLabel();
-		
-//		sc = new Scanner(inputChar.getText());
-		
+
 		titleLabel = new JLabel("TcpIpClient v0.1");
 		close = new JButton("X");
 		inputBtn = new JButton(new ImageIcon("src/img/inputBtn.png"));
@@ -79,16 +82,16 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds(dim.width - windowWidth, (dim.height - windowHeigth - 40), windowWidth, windowHeigth);
 		this.setLayout(new BorderLayout());
-		
+
 		Border lineBorder = BorderFactory.createLineBorder(Color.WHITE, 0);
 		add("North", topPanel);
-			topPanelSetting();
-		
+		topPanelSetting();
+
 		add("Center", centerPanel);
-			centerPanelSetting(lineBorder);
+		centerPanelSetting(lineBorder);
 		add("South", bottomPanel);
-			bottomPanelSetting(lineBorder);
-		
+		bottomPanelSetting(lineBorder);
+
 		close.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				System.exit(0);
@@ -114,15 +117,15 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 	private void bottomPanelSetting(Border lineBorder) {
 		bottomPanel.setBackground(bottomColor);
 		bottomPanel.setPreferredSize(new Dimension(350, 120));
-		bottomPanel.add("Center",inputChar);
-			inputChar.setBorder(lineBorder);
-			inputChar.addKeyListener(keyComendListener());
-			
-			bottomPanel.add("East",inputBtn);
-			inputBtn.setPreferredSize(new Dimension(50, 110));
-			inputBtn.setBorderPainted(false); 
-			inputBtn.setFocusPainted(false); 
-			inputBtn.setContentAreaFilled(false);
+		bottomPanel.add("Center", inputChar);
+		inputChar.setBorder(lineBorder);
+		inputChar.addKeyListener(keyComendListener());
+
+		bottomPanel.add("East", inputBtn);
+		inputBtn.setPreferredSize(new Dimension(50, 110));
+		inputBtn.setBorderPainted(false);
+		inputBtn.setFocusPainted(false);
+		inputBtn.setContentAreaFilled(false);
 	}
 
 	private void centerPanelSetting(Border lineBorder) {
@@ -137,24 +140,25 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 	private void topPanelSetting() {
 		topPanel.setBackground(topColor);
 		topPanel.setPreferredSize(new Dimension(350, 30));
-		topPanel.add("West",titleLabel);
+		topPanel.add("West", titleLabel);
 		topPanel.add("center", nullPanel);
-			nullPanel.setPreferredSize(new Dimension(180, 30));
-			nullPanel.setBackground(topColor);
-		topPanel.add("East",close);
+		nullPanel.setPreferredSize(new Dimension(180, 30));
+		nullPanel.setBackground(topColor);
+		topPanel.add("East", close);
 	}
 
 	private KeyAdapter keyComendListener() {
 		return new KeyAdapter() {
-			@Override //누르고 있을때
+			@Override // 누르고 있을때
 			public void keyPressed(KeyEvent e) {
-				if(e.isShiftDown()&&e.getKeyCode()==10) {
+				if (e.isShiftDown() && e.getKeyCode() == 10) {
 					System.out.println("input Comend");
-				}else if(e.getKeyCode()==10) {
+
+				} else if (e.getKeyCode() == 10) {
 					System.out.println("on The Enter");
 					// 입력한 내용을 서버로 보내는 역할
 					sc = new Scanner(inputChar.getText());
-					sc.nextLine();
+					outText = sc.nextLine();
 					inputChar.setText(" ");
 					chatLabel.repaint();
 				}
@@ -162,16 +166,32 @@ public class UserInterface_v02 extends JFrame implements Runnable{
 		};
 	}
 
-	public String textInput(String text) {
+	public void textInput(String text) {
 		inputChar.getText().replaceAll("(.*)\n", "<br/>");
-		return "";
 	}
-	
+
 	// 서버와 통신을 담당하는 쓰레드
 	@Override
 	public void run() {
-		new UiService_v02("Guest");
-		
+
 	}
 
+	public void upText(String content) {
+	}
+
+	public static void main(String[] args) {
+		UserInterface_v02 UI = new UserInterface_v02();
+		InputText_v01 inputText = new InputText_v01();
+		try {
+			String serverIp = null;
+			String name = "";
+			Socket socket = new Socket(serverIp, 8086);
+		} catch (ConnectException e) {
+			System.out.println("[!] Error : ConnectException");
+		} catch (Exception e) {
+			System.out.println("[!] Error : Exception");
+			e.printStackTrace();
+		}
+
+	}
 }

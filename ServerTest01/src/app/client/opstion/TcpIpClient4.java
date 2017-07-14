@@ -42,14 +42,13 @@ public class TcpIpClient4 {
 			} catch (Exception e) { }
 		}// ClientSender()
 		
-		public void run() {
-			Scanner scanner = new Scanner(System.in);
+		public void run(String content) {
 			try {
 				if(out!=null) {
 					out.writeUTF(name);
 				}
 				while(out!=null) {
-					out.writeUTF("["+name+"]"+scanner.nextLine());
+					out.writeUTF("["+name+"]"+content);
 				}
 			} catch (IOException e) { }
 		}// run()
@@ -71,7 +70,6 @@ public class TcpIpClient4 {
 				try {
 					System.out.println(in.readUTF());
 					if(in.readUTF().equals("서버가 종료되었습니다.")) {
-						System.exit(0);
 					}else {
 						
 					}
